@@ -1,6 +1,6 @@
 [project]
 name = "ayuna-pykit"
-version = "0.1.1"
+version = "0.1.2"
 description = "A collection of Python libraries from Ayuna IO."
 requires-python = ">=3.12"
 license.text = "Please check the LICENSE file under each project for details."
