@@ -25,7 +25,7 @@ on:
 
 jobs:
   publish-core:
-    if: ${{ inputs.package == 'all' || inputs.package == 'ayuna-core' }}
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-core') }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
     permissions:
@@ -60,7 +60,7 @@ jobs:
           packages-dir: core/dist/
 
   publish-creds:
-    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-creds') && (needs.publish-core.result == 'success' || needs.publish-core.result == 'skipped') }}
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-creds') }}
     needs: publish-core
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
@@ -96,7 +96,7 @@ jobs:
           packages-dir: creds/dist/
 
   publish-secrets:
-    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-secrets') && (needs.publish-creds.result == 'success' || needs.publish-creds.result == 'skipped') }}
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-secrets') }}
     needs: publish-creds
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
@@ -132,7 +132,7 @@ jobs:
           packages-dir: secrets/dist/
 
   publish-dostore:
-    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-dostore') && (needs.publish-secrets.result == 'success' || needs.publish-secrets.result == 'skipped') }}
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-dostore') }}
     needs: publish-secrets
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
