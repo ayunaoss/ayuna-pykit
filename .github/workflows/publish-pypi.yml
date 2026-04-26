@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Build ayuna-core
         run: |
@@ -61,7 +61,6 @@ jobs:
 
   publish-creds:
     if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-creds') }}
-    needs: publish-core
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
     permissions:
@@ -74,7 +73,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Build ayuna-creds
         run: |
@@ -97,7 +96,6 @@ jobs:
 
   publish-secrets:
     if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-secrets') }}
-    needs: publish-creds
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
     permissions:
@@ -110,7 +108,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Build ayuna-secrets
         run: |
@@ -133,7 +131,6 @@ jobs:
 
   publish-dostore:
     if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-dostore') }}
-    needs: publish-secrets
     runs-on: ubuntu-latest
     environment: ${{ inputs.repository }}
     permissions:
@@ -146,7 +143,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Build ayuna-dostore
         run: |
