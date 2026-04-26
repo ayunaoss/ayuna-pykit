@@ -51,6 +51,18 @@ Run workflow `Publish Python Packages` and choose:
 - `package`: `all` or one package
 - `repository`: `pypi` or `testpypi`
 
+### Actions UI quick steps
+
+1. Open GitHub repo `ayuna-pykit`.
+2. Go to **Actions** -> **Publish Python Packages**.
+3. Click **Run workflow**.
+4. Select:
+   - `package`: `all`, `ayuna-core`, `ayuna-creds`, `ayuna-secrets`, or `ayuna-dostore`
+   - `repository`: `testpypi` (recommended first) or `pypi`
+5. Click **Run workflow** to start publishing.
+
+Tip: publish to `testpypi` first to validate packaging and dependencies before publishing the same versions to `pypi`.
+
 ## Local publish helper script
 
 Script: `scripts/publish_pypi.sh`

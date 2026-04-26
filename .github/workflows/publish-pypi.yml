@@ -1,0 +1,168 @@
+name: Publish Python Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ayuna-core
+          - ayuna-creds
+          - ayuna-secrets
+          - ayuna-dostore
+      repository:
+        description: Target repository
+        required: true
+        default: testpypi
+        type: choice
+        options:
+          - testpypi
+          - pypi
+
+jobs:
+  publish-core:
+    if: ${{ inputs.package == 'all' || inputs.package == 'ayuna-core' }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.repository }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build ayuna-core
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+        working-directory: core
+
+      - name: Publish ayuna-core to TestPyPI
+        if: ${{ inputs.repository == 'testpypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: core/dist/
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish ayuna-core to PyPI
+        if: ${{ inputs.repository == 'pypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: core/dist/
+
+  publish-creds:
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-creds') && (needs.publish-core.result == 'success' || needs.publish-core.result == 'skipped') }}
+    needs: publish-core
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.repository }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build ayuna-creds
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+        working-directory: creds
+
+      - name: Publish ayuna-creds to TestPyPI
+        if: ${{ inputs.repository == 'testpypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: creds/dist/
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish ayuna-creds to PyPI
+        if: ${{ inputs.repository == 'pypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: creds/dist/
+
+  publish-secrets:
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-secrets') && (needs.publish-creds.result == 'success' || needs.publish-creds.result == 'skipped') }}
+    needs: publish-creds
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.repository }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build ayuna-secrets
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+        working-directory: secrets
+
+      - name: Publish ayuna-secrets to TestPyPI
+        if: ${{ inputs.repository == 'testpypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: secrets/dist/
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish ayuna-secrets to PyPI
+        if: ${{ inputs.repository == 'pypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: secrets/dist/
+
+  publish-dostore:
+    if: ${{ (inputs.package == 'all' || inputs.package == 'ayuna-dostore') && (needs.publish-secrets.result == 'success' || needs.publish-secrets.result == 'skipped') }}
+    needs: publish-secrets
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.repository }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build ayuna-dostore
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+        working-directory: dostore
+
+      - name: Publish ayuna-dostore to TestPyPI
+        if: ${{ inputs.repository == 'testpypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dostore/dist/
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish ayuna-dostore to PyPI
+        if: ${{ inputs.repository == 'pypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dostore/dist/
