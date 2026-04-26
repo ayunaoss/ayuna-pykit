@@ -1,0 +1,100 @@
+[project]
+name = "ayuna-core"
+version = "0.1.0"
+description = "Core utility and component library for Ayuna-Pykit"
+readme = "README.md"
+requires-python = ">=3.12"
+license-files = ["LICENSE"]
+authors = [{ name = "Ayuna IO", email = "foss@ayuna.io" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["ayuna", "ayuna-io", "ayuna-core"]
+dependencies = [
+    "cachetools>=6.0.0",
+    "janus>=2.0.0",
+    "json-log-formatter>=1.1.1",
+    "lz4>=4.4.4",
+    "netifaces2>=0.0.22",
+    "opentelemetry-api>=1.34.1",
+    "opentelemetry-exporter-otlp>=1.34.1",
+    "opentelemetry-instrumentation-logging>=0.55b1",
+    "opentelemetry-sdk>=1.34.1",
+    "orjson>=3.10.18",
+    "pydantic-extra-types>=2.10.5,<3.0.0",
+    "pydantic-settings>=2.9.1,<3.0.0",
+    "pydantic[email,timezone]>=2.11.5,<3.0.0",
+    "pyjwt[crypto]>=2.8.0,<3.0.0",
+    "pyyaml>=6.0.2",
+    "uvloop>=0.21.0",
+    "zstandard>=0.23.0",
+]
+
+[dependency-groups]
+dev = ["pylint>=3.2.6,<4.0.0", "pyright>=1.1.376,<2.0.0", "ruff>=0.8.3,<1.0.0"]
+test = ["pytest>=9.0.2", "pytest-asyncio>=1.3.0", "pytest-dependency>=0.6.1"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["ayuna_core", "README.md", "LICENSE", "pyproject.toml"]
+exclude = ["tests", "pytest.ini", "uv.lock"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ayuna_core"]
+
+[tool.pyright]
+
+[tool.pylint."messages control"]
+disable = "all"
+enable = [
+    "empty-docstring",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+]
+ignore = ["setup.py", "__init__.py"]
+ignore-paths = ["tests"]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.12
+target-version = "py312"

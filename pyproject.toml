@@ -1,0 +1,26 @@
+[project]
+name = "ayuna-pykit"
+version = "0.1.0"
+description = "A collection of Python libraries from Ayuna IO."
+requires-python = ">=3.12"
+license.text = "Please check the LICENSE file under each project for details."
+dependencies = ["ayuna-core", "ayuna-creds", "ayuna-secrets", "ayuna-dostore"]
+
+[tool.uv.sources]
+ayuna-core = { path = "core", editable = true }
+ayuna-creds = { path = "creds", editable = true }
+ayuna-secrets = { path = "secrets", editable = true }
+ayuna-dostore = { path = "dostore", editable = true }
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.34.0,<1.0.0",
+    "pylint>=3.2.6,<4.0.0",
+    "pyright>=1.1.376,<2.0.0",
+    "ruff>=0.8.3,<1.0.0",
+]
+test = ["pytest>=9.0.2", "pytest-asyncio>=1.3.0", "pytest-dependency>=0.6.1"]
+
+[tool.poe.tasks.clean]
+cmd = "find . -type d \\( -name .ruff_cache -o -name __pycache__ -o -name .pytest_cache -o -name *.egg-info \\) -exec rm -rf {} +"
+help = "Remove ruff, pytest, and Python cache directories - Use 'uv run poe clean' to execute"
